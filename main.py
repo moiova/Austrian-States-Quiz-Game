@@ -12,26 +12,26 @@ t.shape(image)
 csv_data = pandas.read_csv("9_states.csv")
 
 # convert 'state' column data to lowercase
-csv_data.state = csv_data.state.str.lower()
-
-states_as_list = csv_data.state.to_list()
+csv_data.state = csv_data.state.str.title()
 
 guessed_states = 0
 score = Score()
 
 while guessed_states < 9:
-    state = t.textinput("Austrian State", "Give a state").lower()
+    state = t.textinput(f"{guessed_states}/{len(csv_data.state)} States Correct", "Give a state")
 
-    if state in states_as_list:
-        guessed_states += 1
-        score.update_score(guessed_states)
-
-        index = states_as_list.index(state)
-        new_state = State(state=state, x_pos=csv_data.x[index], y_pos=csv_data.y[index])
-
-    elif state is None:
+    if state is None:
         score.game_over()
         guessed_states = 99
+
+    else:
+        state = state.title()
+        for states_from_csv in csv_data.state:
+            if states_from_csv == state:
+                guessed_states += 1
+                score.update_score(guessed_states)
+                state_data = csv_data[csv_data.state == state]
+                new_state = State(state=state, x_pos=int(state_data.x.iloc[0]), y_pos=int(state_data.y.iloc[0]))
 
 if guessed_states == 9:
     score.congrats()
