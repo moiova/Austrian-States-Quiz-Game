@@ -10,25 +10,29 @@ screen.addshape(image)
 t.shape(image)
 
 csv_data = pandas.read_csv("9_states.csv")
+states_as_list = csv_data.state.to_list()
 
 guessed_states = 0
 score = Score()
 
 while guessed_states < 9:
-    state = t.textinput("Austria State", "Give a state").lower()
+    state = t.textinput("Austrian State", "Give a state")
 
-    index = -1
-    for state_from_csv in csv_data.state:
-        index += 1
-        if state_from_csv.lower() == state:
-            guessed_states += 1
-            score.update_score(guessed_states)
+    if state in states_as_list:
+        guessed_states += 1
+        score.update_score(guessed_states)
 
-            new_state = State(state=state_from_csv, x_pos=csv_data.x[index], y_pos=csv_data.y[index])
-            print('index: ', index)
-    print('guessed_states: ', guessed_states)
+        index = states_as_list.index(state)
+        new_state = State(state=state, x_pos=csv_data.x[index], y_pos=csv_data.y[index])
+        print('index: ', index)
 
-score.congrats()
+    elif state is None:
+        score.game_over()
+        guessed_states = 99
 
-screen.update()
-t.mainloop()
+if guessed_states == 9:
+    score.congrats()
+
+# screen.update()
+# t.mainloop()
+t.exitonclick()

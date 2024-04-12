@@ -15,3 +15,7 @@ class Score(Turtle):
     def congrats(self):
         self.goto(0, 0)
         self.write('Congratulations!', font=('Arial', 24, 'normal'))
+
+    def game_over(self):
+        self.goto(-100, 0)
+        self.write('You canceled the game, bye', font=('Arial', 24, 'normal'))
