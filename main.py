@@ -11,7 +11,7 @@ t.shape(image)
 
 csv_data = pandas.read_csv("9_states.csv")
 
-# convert 'state' column data to lowercase
+# convert 'state' column data to title case
 csv_data.state = csv_data.state.str.title()
 
 guessed_states = 0
