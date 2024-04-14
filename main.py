@@ -20,23 +20,21 @@ score = Score()
 
 
 def save_not_guessed_states_as_csv():
-    not_guessed_states_list = []
     state_data_as_list = csv_data.state.to_list()
 
     # sort lists
     guessed_states_list.sort()
     state_data_as_list.sort()
 
-    for i in range(len(state_data_as_list)):
-        if state_data_as_list[i] not in guessed_states_list:
-            not_guessed_states_list.append(state_data_as_list[i])
+    not_guessed_states_list = [missed_state for missed_state in state_data_as_list if missed_state not in guessed_states_list]
 
     df = pandas.DataFrame(not_guessed_states_list)
     df.to_csv("remaining_states.csv")
 
 
 while guessed_states < 9:
-    state = t.textinput(f"{guessed_states}/{len(csv_data.state)} States Correct", "Give a state, type 'exit' to exit the game")
+    state = t.textinput(f"{guessed_states}/{len(csv_data.state)} States Correct", "Give a state, type 'exit' to exit "
+                                                                                  "the game")
 
     if state is None:
         score.game_over()
